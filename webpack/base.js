@@ -31,14 +31,7 @@ export const internalStyleRule = {
         discardComments: { removeAll: true },
       },
     },
-    {
-      loader: 'postcss-loader',
-      options: {
-        config: {
-          path: './tools/postcss.config.js',
-        },
-      },
-    },
+    'postcss-loader',
   ],
 };
 export const externalStyleRule = {
@@ -76,7 +69,7 @@ export const stats = {
   cachedAssets: isVerbose,
 };
 
-export const getBabelLoader = ({ targets }) => ({
+export const getBabelLoader = ({ targets, extraPlugins = [] }) => ({
   test: /\.jsx?$/,
   loader: 'babel-loader',
   include: [
@@ -100,6 +93,7 @@ export const getBabelLoader = ({ targets }) => ({
     plugins: [
       ...isDebug ? ['transform-react-jsx-source'] : [],
       ...isDebug ? ['transform-react-jsx-self'] : [],
+      ...extraPlugins,
     ],
   },
 });

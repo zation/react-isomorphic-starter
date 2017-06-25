@@ -22,7 +22,7 @@ export default {
   target: 'node',
 
   entry: {
-    server: ['babel-polyfill', './src/server.js'],
+    server: ['babel-polyfill', './src/server/index.js'],
   },
 
   output: {
@@ -33,12 +33,18 @@ export default {
     chunkFilename: 'chunks/[name].js',
     libraryTarget: 'commonjs2',
     devtoolModuleFilenameTemplate: info => path.resolve(info.absoluteResourcePath),
+    ...isDebug ? {
+      hotUpdateMainFilename: 'updates/[hash].hot-update.json',
+      hotUpdateChunkFilename: 'updates/[id].[hash].hot-update.js',
+    } : {},
   },
 
   module: {
     rules: [
       getBabelLoader({
-        node: pkg.engines.node.match(/(\d+\.?)+/)[0],
+        targets: {
+          node: pkg.engines.node.match(/(\d+\.?)+/)[0],
+        },
       }),
       {
         test: fileRegex,
@@ -74,6 +80,12 @@ export default {
       raw: true,
       entryOnly: false,
     }),
+
+    ...isDebug ? [
+      new webpack.HotModuleReplacementPlugin(),
+      new webpack.NoEmitOnErrorsPlugin(),
+      new webpack.NamedModulesPlugin(),
+    ] : [],
   ],
 
   node: {

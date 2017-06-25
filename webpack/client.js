@@ -25,7 +25,15 @@ export default {
   target: 'web',
 
   entry: {
-    client: ['babel-polyfill', './src/client.js'],
+    client: [
+      'babel-polyfill',
+      ...isDebug ? [
+        'react-error-overlay',
+        'react-hot-loader/patch',
+        'webpack-hot-middleware/client?name=client&reload=true',
+      ] : [],
+      './src/client/index.js',
+    ],
   },
 
   output: {
@@ -40,8 +48,11 @@ export default {
   module: {
     rules: [
       getBabelLoader({
-        browsers: pkg.browserslist,
-        uglify: true,
+        targets: {
+          browsers: pkg.browserslist,
+          uglify: true,
+        },
+        extraPlugins: isDebug ? ['react-hot-loader/babel'] : [],
       }),
       {
         test: fileRegex,
@@ -80,7 +91,10 @@ export default {
       minChunks: module => /node_modules/.test(module.resource),
     }),
 
-    ...isDebug ? [] : [
+    ...isDebug ? [
+      new webpack.HotModuleReplacementPlugin(),
+      new webpack.NoEmitOnErrorsPlugin(),
+    ] : [
       new webpack.optimize.UglifyJsPlugin({
         sourceMap: true,
         compress: {
