@@ -129,7 +129,7 @@ async function start() {
   const timeStart = new Date();
   console.info(`[${format(timeStart)}] Launching server...`);
 
-  // Load compiled src/server.js as a middleware
+  // Load compiled src/server/index.js as a middleware
   // eslint-disable-next-line global-require, import/no-unresolved
   app = require('../build/server').default;
   appPromiseIsResolved = true;
@@ -138,7 +138,7 @@ async function start() {
   // Launch the development server with Browsersync and HMR
   await new Promise((resolve, reject) => browserSync.create().init({
     // https://www.browsersync.io/docs/options
-    server: 'src/server.js',
+    server: 'src/server/index.js',
     middleware: [server],
     open: !process.argv.includes('--silent'),
     ...isDebug ? {} : { notify: false, ui: false },

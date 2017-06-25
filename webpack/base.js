@@ -1,7 +1,9 @@
 import path from 'path';
 
-export const isDebug = !process.argv.includes('--release');
-export const isVerbose = process.argv.includes('--verbose');
+const { env: { NODE_ENV }, argv } = process;
+
+export const isDev = NODE_ENV !== 'production';
+export const isVerbose = argv.includes('--verbose');
 
 export const context = path.resolve(__dirname, '..');
 
@@ -23,11 +25,11 @@ export const internalStyleRule = {
       loader: 'css-loader',
       options: {
         importLoaders: 1,
-        sourceMap: isDebug,
+        sourceMap: isDev,
         modules: true,
-        localIdentName: isDebug ? '[name]-[local]-[hash:base64:5]' : '[hash:base64:5]',
+        localIdentName: isDev ? '[name]-[local]-[hash:base64:5]' : '[hash:base64:5]',
         // CSS Nano http://cssnano.co/options/
-        minimize: !isDebug,
+        minimize: !isDev,
         discardComments: { removeAll: true },
       },
     },
@@ -46,20 +48,20 @@ export const externalStyleRule = {
     {
       loader: 'css-loader',
       options: {
-        sourceMap: isDebug,
+        sourceMap: isDev,
         // CSS Modules Disabled
         modules: false,
-        minimize: !isDebug,
+        minimize: !isDev,
         discardComments: { removeAll: true },
       },
     },
   ],
 };
 export const fileRegex = /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/;
-export const fileName = isDebug ? '[path][name].[ext]?[hash:8]' : '[hash:8].[ext]';
+export const fileName = isDev ? '[path][name].[ext]?[hash:8]' : '[hash:8].[ext]';
 export const stats = {
   colors: true,
-  reasons: isDebug,
+  reasons: isDev,
   hash: isVerbose,
   version: isVerbose,
   timings: true,
@@ -76,7 +78,7 @@ export const getBabelLoader = ({ targets, extraPlugins = [] }) => ({
     path.resolve(__dirname, '../src'),
   ],
   query: {
-    cacheDirectory: isDebug,
+    cacheDirectory: isDev,
 
     babelrc: false,
     presets: [
@@ -88,11 +90,11 @@ export const getBabelLoader = ({ targets, extraPlugins = [] }) => ({
       }],
       'stage-2',
       'react',
-      ...isDebug ? [] : ['react-optimize'],
+      ...isDev ? [] : ['react-optimize'],
     ],
     plugins: [
-      ...isDebug ? ['transform-react-jsx-source'] : [],
-      ...isDebug ? ['transform-react-jsx-self'] : [],
+      ...isDev ? ['transform-react-jsx-source'] : [],
+      ...isDev ? ['transform-react-jsx-self'] : [],
       ...extraPlugins,
     ],
   },

@@ -3,7 +3,7 @@ import webpack from 'webpack';
 import AssetsPlugin from 'assets-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import {
-  isDebug,
+  isDev,
   isVerbose,
   context,
   resolve,
@@ -27,7 +27,7 @@ export default {
   entry: {
     client: [
       'babel-polyfill',
-      ...isDebug ? [
+      ...isDev ? [
         'react-error-overlay',
         'react-hot-loader/patch',
         'webpack-hot-middleware/client?name=client&reload=true',
@@ -40,8 +40,8 @@ export default {
     path: path.resolve(__dirname, '../build/public/assets'),
     publicPath: '/assets/',
     pathinfo: isVerbose,
-    filename: isDebug ? '[name].js' : '[name].[chunkhash:8].js',
-    chunkFilename: isDebug ? '[name].chunk.js' : '[name].[chunkhash:8].chunk.js',
+    filename: isDev ? '[name].js' : '[name].[chunkhash:8].js',
+    chunkFilename: isDev ? '[name].chunk.js' : '[name].[chunkhash:8].chunk.js',
     devtoolModuleFilenameTemplate: info => path.resolve(info.absoluteResourcePath),
   },
 
@@ -52,7 +52,7 @@ export default {
           browsers: pkg.browserslist,
           uglify: true,
         },
-        extraPlugins: isDebug ? ['react-hot-loader/babel'] : [],
+        extraPlugins: isDev ? ['react-hot-loader/babel'] : [],
       }),
       {
         test: fileRegex,
@@ -64,7 +64,7 @@ export default {
       internalStyleRule,
       externalStyleRule,
 
-      ...isDebug ? [] : [
+      ...isDev ? [] : [
         {
           test: path.resolve(__dirname, '../node_modules/react-deep-force-update/lib/index.js'),
           loader: 'null-loader',
@@ -75,9 +75,9 @@ export default {
 
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': isDebug ? '"development"' : '"production"',
+      'process.env.NODE_ENV': isDev ? '"development"' : '"production"',
       'process.env.BROWSER': true,
-      __DEV__: isDebug, // TODO: check if can replace with NODE_ENV
+      __DEV__: isDev,
     }),
 
     new AssetsPlugin({
@@ -91,7 +91,7 @@ export default {
       minChunks: module => /node_modules/.test(module.resource),
     }),
 
-    ...isDebug ? [
+    ...isDev ? [
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
     ] : [
@@ -122,11 +122,11 @@ export default {
     tls: 'empty',
   },
 
-  bail: !isDebug,
+  bail: !isDev,
 
-  cache: isDebug,
+  cache: isDev,
 
   stats,
 
-  devtool: isDebug ? 'cheap-module-inline-source-map' : 'source-map',
+  devtool: isDev ? 'cheap-module-inline-source-map' : 'source-map',
 };

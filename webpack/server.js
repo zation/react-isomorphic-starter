@@ -2,7 +2,7 @@ import path from 'path';
 import webpack from 'webpack';
 import nodeExternals from 'webpack-node-externals';
 import {
-  isDebug,
+  isDev,
   isVerbose,
   context,
   resolve,
@@ -33,7 +33,7 @@ export default {
     chunkFilename: 'chunks/[name].js',
     libraryTarget: 'commonjs2',
     devtoolModuleFilenameTemplate: info => path.resolve(info.absoluteResourcePath),
-    ...isDebug ? {
+    ...isDev ? {
       hotUpdateMainFilename: 'updates/[hash].hot-update.json',
       hotUpdateChunkFilename: 'updates/[id].[hash].hot-update.js',
     } : {},
@@ -70,9 +70,9 @@ export default {
 
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': isDebug ? '"development"' : '"production"',
+      'process.env.NODE_ENV': isDev ? '"development"' : '"production"',
       'process.env.BROWSER': false,
-      __DEV__: isDebug,
+      __DEV__: isDev,
     }),
 
     new webpack.BannerPlugin({
@@ -81,7 +81,7 @@ export default {
       entryOnly: false,
     }),
 
-    ...isDebug ? [
+    ...isDev ? [
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
       new webpack.NamedModulesPlugin(),
@@ -97,11 +97,11 @@ export default {
     __dirname: false,
   },
 
-  bail: !isDebug,
+  bail: !isDev,
 
-  cache: isDebug,
+  cache: isDev,
 
   stats,
 
-  devtool: isDebug ? 'cheap-module-inline-source-map' : 'source-map',
+  devtool: isDev ? 'cheap-module-inline-source-map' : 'source-map',
 };
