@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { map, forEach } from 'lodash/fp';
 import deepForceUpdate from 'react-deep-force-update';
 import queryString from 'query-string';
 import { createPath } from 'history/PathUtils';
-import App from 'components/app';
+import App from 'shared/app';
 import createFetch from 'shared/create-fetch';
 import router from 'shared/router';
 import history from './history';
@@ -18,8 +19,10 @@ const context = {
   // https://github.com/kriasoft/isomorphic-style-loader
   insertCss: (...styles) => {
     // eslint-disable-next-line no-underscore-dangle
-    const removeCss = styles.map(x => x._insertCss());
-    return () => { removeCss.forEach(f => f()); };
+    const removeCss = map(x => x._insertCss(), styles);
+    return () => {
+      forEach(f => f())(removeCss);
+    };
   },
   // Universal HTTP client
   fetch: createFetch({

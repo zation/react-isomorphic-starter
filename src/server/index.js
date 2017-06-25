@@ -6,7 +6,8 @@ import expressJwt, { UnauthorizedError as Jwt401Error } from 'express-jwt';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import PrettyError from 'pretty-error';
-import App from 'components/app';
+import { map } from 'lodash/fp';
+import App from 'shared/app';
 import { ErrorPageWithoutStyle } from 'modules/error/error-page';
 import errorPageStyle from 'modules/error/error-page.css';
 import createFetch from 'shared/create-fetch';
@@ -88,21 +89,25 @@ app.get('*', async (req, res, next) => {
       return;
     }
 
-    const data = { ...route };
-    data.children = ReactDOM.renderToString(<App context={context}>{route.component}</App>);
-    data.styles = [
-      { id: 'css', cssText: [...css].join('') },
-    ];
-    data.scripts = [assets.vendor.js];
-    if (route.chunks) {
-      data.scripts.push(...route.chunks.map(chunk => assets[chunk].js));
-    }
-    data.scripts.push(assets.client.js);
-    data.app = {
-      apiUrl: config.api.clientUrl,
-    };
-
-    const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);
+    const html = ReactDOM.renderToStaticMarkup(
+      <Html
+        title={route.title}
+        description={route.description}
+        styles={[
+          { id: 'css', cssText: [...css].join('') },
+        ]}
+        scripts={[
+          assets.vendor.js,
+          ...route.chunks ? map(chunk => assets[chunk].js, route.chunks) : [],
+          assets.client.js,
+        ]}
+        app={{
+          apiUrl: config.api.clientUrl,
+        }}
+      >
+        {ReactDOM.renderToString(<App context={context}>{route.component}</App>)}
+      </Html>,
+    );
     res.status(route.status || 200);
     res.send(`<!doctype html>${html}`);
   } catch (err) {
@@ -117,7 +122,7 @@ const pe = new PrettyError();
 pe.skipNodeFiles();
 pe.skipPackage('express');
 
-app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
+app.use((err, req, res) => {
   console.error(pe.render(err));
   const html = ReactDOM.renderToStaticMarkup(
     <Html

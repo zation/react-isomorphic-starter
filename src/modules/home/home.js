@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import { map } from 'lodash/fp';
 import s from './home.css';
 
 class Home extends React.Component {
@@ -17,7 +18,7 @@ class Home extends React.Component {
       <div className={s.root}>
         <div className={s.container}>
           <h1>React.js News</h1>
-          {this.props.news.map(item => (
+          {map(item => (
             <article key={item.link} className={s.newsItem}>
               <h1 className={s.newsTitle}><a href={item.link}>{item.title}</a></h1>
               <div
@@ -26,7 +27,7 @@ class Home extends React.Component {
                 dangerouslySetInnerHTML={{ __html: item.content }}
               />
             </article>
-          ))}
+          ), this.props.news)}
         </div>
       </div>
     );

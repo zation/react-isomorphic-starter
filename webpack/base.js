@@ -93,8 +93,7 @@ export const getBabelLoader = ({ targets, extraPlugins = [] }) => ({
       ...isDev ? [] : ['react-optimize'],
     ],
     plugins: [
-      ...isDev ? ['transform-react-jsx-source'] : [],
-      ...isDev ? ['transform-react-jsx-self'] : [],
+      ...isDev ? ['transform-react-jsx-source', 'transform-react-jsx-self'] : [],
       ...extraPlugins,
     ],
   },

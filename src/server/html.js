@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import serialize from 'serialize-javascript';
+import { map } from 'lodash/fp';
 import config from './config';
 
 /* eslint-disable react/no-danger */
@@ -14,13 +15,15 @@ class Html extends React.Component {
       cssText: PropTypes.string.isRequired,
     }).isRequired),
     scripts: PropTypes.arrayOf(PropTypes.string.isRequired),
-    app: PropTypes.object, // eslint-disable-line
+    // eslint-disable-next-line react/forbid-prop-types
+    app: PropTypes.object,
     children: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
     styles: [],
     scripts: [],
+    app: {},
   };
 
   render() {
@@ -33,20 +36,20 @@ class Html extends React.Component {
           <title>{title}</title>
           <meta name="description" content={description} />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          {scripts.map(script => <link key={script} rel="preload" href={script} as="script" />)}
+          {map(script => <link key={script} rel="preload" href={script} as="script" />, scripts)}
           <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-          {styles.map(style => (
+          {map(style => (
             <style
               key={style.id}
               id={style.id}
               dangerouslySetInnerHTML={{ __html: style.cssText }}
             />
-          ))}
+          ), styles)}
         </head>
         <body>
           <div id="app" dangerouslySetInnerHTML={{ __html: children }} />
           <script dangerouslySetInnerHTML={{ __html: `window.App=${serialize(app)}` }} />
-          {scripts.map(script => <script key={script} src={script} />)}
+          {map(script => <script key={script} src={script} />, scripts)}
           {config.analytics.googleTrackingId &&
             <script
               dangerouslySetInnerHTML={{ __html:
