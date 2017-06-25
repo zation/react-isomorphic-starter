@@ -2,6 +2,7 @@ import path from 'path';
 import webpack from 'webpack';
 import AssetsPlugin from 'assets-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import LodashModuleReplacementPlugin from 'lodash-webpack-plugin';
 import {
   isDev,
   isVerbose,
@@ -52,7 +53,7 @@ export default {
           browsers: pkg.browserslist,
           uglify: true,
         },
-        extraPlugins: isDev ? ['react-hot-loader/babel'] : [],
+        extraPlugins: isDev ? ['react-hot-loader/babel', 'lodash'] : ['lodash'],
       }),
       {
         test: fileRegex,
@@ -90,6 +91,8 @@ export default {
       name: 'vendor',
       minChunks: module => /node_modules/.test(module.resource),
     }),
+
+    new LodashModuleReplacementPlugin(),
 
     ...isDev ? [
       new webpack.HotModuleReplacementPlugin(),
