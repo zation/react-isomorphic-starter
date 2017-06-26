@@ -8,7 +8,7 @@ async function action({ store: { dispatch } }) {
   return {
     chunks: ['home'],
     title: 'React Starter Kit',
-    component: <Layout><Home articles={[]} /></Layout>,
+    component: <Layout><Home /></Layout>,
   };
 }
 
