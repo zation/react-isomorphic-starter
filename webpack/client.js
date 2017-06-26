@@ -92,7 +92,10 @@ export default {
       minChunks: module => /node_modules/.test(module.resource),
     }),
 
-    new LodashModuleReplacementPlugin(),
+    new LodashModuleReplacementPlugin({
+      currying: true,
+      paths: true,
+    }),
 
     ...isDev ? [
       new webpack.HotModuleReplacementPlugin(),
