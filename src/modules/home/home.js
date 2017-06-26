@@ -6,7 +6,7 @@ import s from './home.css';
 
 class Home extends React.Component {
   static propTypes = {
-    news: PropTypes.arrayOf(PropTypes.shape({
+    articles: PropTypes.arrayOf(PropTypes.shape({
       title: PropTypes.string.isRequired,
       link: PropTypes.string.isRequired,
       content: PropTypes.string,
@@ -27,7 +27,7 @@ class Home extends React.Component {
                 dangerouslySetInnerHTML={{ __html: item.content }}
               />
             </article>
-          ), this.props.news)}
+          ), this.props.articles)}
         </div>
       </div>
     );

@@ -5,10 +5,12 @@ import deepForceUpdate from 'react-deep-force-update';
 import queryString from 'query-string';
 import { createPath } from 'history/PathUtils';
 import App from 'shared/app';
-import createFetch from 'shared/create-fetch';
 import router from 'shared/router';
+import createStore from 'shared/create-store';
 import history from './history';
 import { updateMeta } from './dom-utils';
+
+const { App: { initialState, apiBaseUrl } } = global;
 
 /* eslint-disable global-require */
 
@@ -24,10 +26,8 @@ const context = {
       forEach(f => f())(removeCss);
     };
   },
-  // Universal HTTP client
-  fetch: createFetch({
-    baseUrl: window.App.apiUrl,
-  }),
+  store: createStore({ initialState, apiBaseUrl }),
+  storeSubscription: null,
 };
 
 // Switch off the native scroll restoration behavior and handle it manually

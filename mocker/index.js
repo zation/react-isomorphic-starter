@@ -3,7 +3,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 
-import createNews from './news';
+import createNews from './article';
 
 const app = express();
 app.use(morgan('dev'));

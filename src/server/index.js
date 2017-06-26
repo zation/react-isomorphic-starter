@@ -2,19 +2,20 @@ import path from 'path';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
-import expressJwt, { UnauthorizedError as Jwt401Error } from 'express-jwt';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import PrettyError from 'pretty-error';
-import { map } from 'lodash/fp';
+import { map, forEach } from 'lodash/fp';
 import App from 'shared/app';
 import { ErrorPageWithoutStyle } from 'modules/error/error-page';
 import errorPageStyle from 'modules/error/error-page.css';
-import createFetch from 'shared/create-fetch';
 import router from 'shared/router';
+import createStore from 'shared/create-store';
 import Html from './html';
 import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import config from './config';
+
+const { api: { baseUrl: apiBaseUrl } } = config;
 
 const app = express();
 
@@ -32,24 +33,6 @@ app.use(express.static(path.resolve(__dirname, 'public')));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-//
-// Authentication
-// -----------------------------------------------------------------------------
-app.use(expressJwt({
-  secret: config.auth.jwt.secret,
-  credentialsRequired: false,
-  getToken: req => req.cookies.id_token,
-}));
-// Error handler for express-jwt
-app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
-  if (err instanceof Jwt401Error) {
-    console.error('[express-jwt-error]', req.cookies.id_token);
-    // `clearCookie`, otherwise user can't use web-app until cookie expires
-    res.clearCookie('id_token');
-  }
-  next(err);
-});
 
 if (__DEV__) {
   app.enable('trust proxy');
@@ -69,13 +52,10 @@ app.get('*', async (req, res, next) => {
       // https://github.com/kriasoft/isomorphic-style-loader
       insertCss: (...styles) => {
         // eslint-disable-next-line no-underscore-dangle
-        styles.forEach(style => css.add(style._getCss()));
+        forEach(style => css.add(style._getCss()), styles);
       },
-      // Universal HTTP client
-      fetch: createFetch({
-        baseUrl: config.api.serverUrl,
-        cookie: req.headers.cookie,
-      }),
+      store: createStore({ apiBaseUrl }),
+      storeSubscription: null,
     };
 
     const route = await router.resolve({
@@ -88,6 +68,9 @@ app.get('*', async (req, res, next) => {
       res.redirect(route.status || 302, route.redirect);
       return;
     }
+
+    // NOTICE: keep this before css
+    const content = ReactDOM.renderToString(<App context={context}>{route.component}</App>);
 
     const html = ReactDOM.renderToStaticMarkup(
       <Html
@@ -102,10 +85,11 @@ app.get('*', async (req, res, next) => {
           assets.client.js,
         ]}
         app={{
-          apiUrl: config.api.clientUrl,
+          apiBaseUrl,
+          initialState: context.store.getState(),
         }}
       >
-        {ReactDOM.renderToString(<App context={context}>{route.component}</App>)}
+        {content}
       </Html>,
     );
     res.status(route.status || 200);
