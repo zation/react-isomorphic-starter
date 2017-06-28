@@ -26,8 +26,11 @@ const handleSuccess = (dispatch, action) => response =>
   deserialize(response)
     .then(data => dispatch({ ...action, payload: data }));
 
-const handleFailed = (dispatch, { meta }) => response =>
-  deserialize(response)
+const handleFailed = (dispatch, { meta }) => (response) => {
+  if (response instanceof Error) {
+    throw response;
+  }
+  return deserialize(response)
     .then((data) => {
       dispatch(throwServerError({
         errors: data,
@@ -39,6 +42,7 @@ const handleFailed = (dispatch, { meta }) => response =>
       }));
       throw data;
     });
+};
 
 export default ({ apiBaseUrl }) => ({ getState, dispatch }) => next => (action) => {
   const { payload } = action;

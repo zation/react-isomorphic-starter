@@ -106,7 +106,9 @@ const pe = new PrettyError();
 pe.skipNodeFiles();
 pe.skipPackage('express');
 
-app.use((err, req, res) => {
+// NOTE: express use params number to detect if it's a error handler middleware T_T
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
   console.error(pe.render(err));
   const html = ReactDOM.renderToStaticMarkup(
     <Html
