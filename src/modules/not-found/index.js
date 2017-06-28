@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from 'components/layout';
+import Layout from 'shared/components/layout';
 import NotFound from './not-found';
 
 const title = 'Page Not Found';

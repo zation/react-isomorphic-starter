@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from '../../components/layout/layout';
+import Layout from 'shared/components/layout/layout';
 import Register from './register';
 
 const title = 'New User Registration';
