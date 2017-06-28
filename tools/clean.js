@@ -3,7 +3,7 @@ import { cleanDir } from './lib/fs';
 /**
  * Cleans up the output (build) directory.
  */
-function clean() {
+export default function clean() {
   return Promise.all([
     cleanDir('build/*', {
       nosort: true,
@@ -12,5 +12,3 @@ function clean() {
     }),
   ]);
 }
-
-export default clean;

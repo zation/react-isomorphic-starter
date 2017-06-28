@@ -23,7 +23,7 @@ const watchOptions = {
   // ignored: /node_modules/,
 };
 
-function createCompilationPromise(name, compiler, config) {
+const createCompilationPromise = (name, compiler, config) => {
   return new Promise((resolve, reject) => {
     let timeStart = new Date();
     compiler.plugin('compile', () => {
@@ -43,7 +43,7 @@ function createCompilationPromise(name, compiler, config) {
       }
     });
   });
-}
+};
 
 let server;
 
@@ -51,7 +51,7 @@ let server;
  * Launches a development web server with "live reload" functionality -
  * synchronizing URLs, interactions and code changes across multiple devices.
  */
-async function start() {
+export default async function devServer() {
   if (server) return server;
   server = express();
   server.use(createLaunchEditorMiddleware());
@@ -148,6 +148,4 @@ async function start() {
   const time = timeEnd.getTime() - timeStart.getTime();
   console.info(`[${format(timeEnd)}] Server launched after ${time} ms`);
   return server;
-}
-
-export default start;
+};

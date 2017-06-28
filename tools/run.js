@@ -1,22 +1,20 @@
-export function format(time) {
-  return time.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, '$1');
-}
+export const format = time =>
+  time.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, '$1');
 
-function run(fn, options) {
+const run = async (fn, options) => {
   const task = typeof fn.default === 'undefined' ? fn : fn.default;
   const start = new Date();
   console.info(
     `[${format(start)}] Starting '${task.name}${options ? ` (${options})` : ''}'...`,
   );
-  return task(options).then((resolution) => {
-    const end = new Date();
-    const time = end.getTime() - start.getTime();
-    console.info(
-      `[${format(end)}] Finished '${task.name}${options ? ` (${options})` : ''}' after ${time} ms`,
-    );
-    return resolution;
-  });
-}
+  const resolution = await task(options);
+  const end = new Date();
+  const time = end.getTime() - start.getTime();
+  console.info(
+    `[${format(end)}] Finished '${task.name}${options ? ` (${options})` : ''}' after ${time} ms`,
+  );
+  return resolution;
+};
 
 if (require.main === module && process.argv.length > 2) {
   // eslint-disable-next-line no-underscore-dangle

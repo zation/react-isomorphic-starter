@@ -67,6 +67,7 @@ export const stats = {
   timings: true,
   chunks: isVerbose,
   chunkModules: isVerbose,
+  modules: isVerbose,
   cached: isVerbose,
   cachedAssets: isVerbose,
 };
