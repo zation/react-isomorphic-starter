@@ -11,9 +11,6 @@ module.exports = {
     baseUrl: process.env.API_BASE_URL || 'http://localhost:9001',
   },
 
-  // Database
-  databaseUrl: process.env.DATABASE_URL || 'sqlite:database.sqlite',
-
   // Web analytics
   analytics: {
     // https://analytics.google.com/
