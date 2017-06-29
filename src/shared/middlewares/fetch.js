@@ -54,7 +54,7 @@ export default ({ apiBaseUrl }) => ({ getState, dispatch }) => next => (action) 
         ...options,
         headers: {
           ...options.headers,
-          'x-auth-token': !withoutAuth && authorization ? authorization : undefined,
+          authorization: !withoutAuth && authorization ? authorization : undefined,
         },
       }).then(checkStatus)
         .then(handleSuccess(dispatch, action))

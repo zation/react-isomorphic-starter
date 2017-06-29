@@ -1,5 +1,5 @@
 import React from 'react';
-import { readMine } from 'shared/entities/actions/user';
+import { readMine, readAll } from 'shared/entities/actions/user';
 import getCurrentUser from 'shared/selectors/current-user';
 import Admin from './admin';
 
@@ -7,6 +7,7 @@ const title = 'Admin Page';
 
 export default async ({ store: { dispatch, getState } }) => {
   await dispatch(readMine());
+  dispatch(readAll());
 
   const currentUser = getCurrentUser(getState());
 
@@ -14,7 +15,7 @@ export default async ({ store: { dispatch, getState } }) => {
     return {
       chunks: ['admin'],
       title: `${title} - ${currentUser.name}`,
-      component: <Admin title={title} currentUser={currentUser} />,
+      component: <Admin title={title} />,
     };
   }
 

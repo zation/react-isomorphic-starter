@@ -101,6 +101,7 @@ export default async function devServer() {
       }
       return console.warn('[HMR] Cannot find update.');
     }).catch((error) => {
+      console.error(error);
       if (['abort', 'fail'].includes(app.hot.status())) {
         console.warn('[HMR] Cannot apply update.');
         delete require.cache[require.resolve('../build/server')];
