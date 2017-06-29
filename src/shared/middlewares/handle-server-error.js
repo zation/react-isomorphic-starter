@@ -6,7 +6,7 @@ export default ({ history }) => () => next => (action) => {
       meta: { status, ignoreAuthRedirection },
     } = action;
     if (status === 401 && !ignoreAuthRedirection && history) {
-      history.push('/login');
+      history.replace('/login');
     }
   }
   return next(action);
