@@ -33,8 +33,8 @@ const context = {
 // Switch off the native scroll restoration behavior and handle it manually
 // https://developers.google.com/web/updates/2015/09/history-api-scroll-restoration
 const scrollPositionsHistory = {};
-if (window.history && 'scrollRestoration' in window.history) {
-  window.history.scrollRestoration = 'manual';
+if (global.history && 'scrollRestoration' in global.history) {
+  global.history.scrollRestoration = 'manual';
 }
 
 let onRenderComplete = function initialRenderComplete() {

@@ -1,9 +1,8 @@
 import React from 'react';
-import Layout from 'shared/components/layout';
 import Admin from './admin';
 
-const title = 'Admin Page';
 const isAdmin = false;
+const title = 'Admin Page';
 
 function action() {
   if (!isAdmin) {
@@ -13,7 +12,7 @@ function action() {
   return {
     chunks: ['admin'],
     title,
-    component: <Layout><Admin title={title} /></Layout>,
+    component: <Admin title={title} />,
   };
 }
 

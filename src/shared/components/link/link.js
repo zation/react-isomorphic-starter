@@ -17,7 +17,7 @@ export default compose(
     onClick: PropTypes.func,
   }),
   withHandlers({
-    handleClick: ({ onClick }) => (event) => {
+    handleClick: ({ onClick, to }) => (event) => {
       if (onClick) {
         onClick(event);
       }
@@ -30,7 +30,7 @@ export default compose(
       }
 
       event.preventDefault();
-      history.push(this.props.to);
+      history.push(to);
     },
   }),
 )(({ to, children, handleClick, ...props }) => (

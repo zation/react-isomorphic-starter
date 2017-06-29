@@ -1,16 +1,11 @@
 import React from 'react';
-import Layout from 'shared/components/layout';
 import NotFound from './not-found';
 
 const title = 'Page Not Found';
 
-function action() {
-  return {
-    chunks: ['not-found'],
-    title,
-    component: <Layout><NotFound title={title} /></Layout>,
-    status: 404,
-  };
-}
-
-export default action;
+export default () => ({
+  chunks: ['not-found'],
+  title,
+  component: <NotFound title={title} />,
+  status: 404,
+});

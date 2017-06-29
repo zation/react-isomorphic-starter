@@ -1,23 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import { compose, setDisplayName, setPropTypes } from 'recompose';
+import Layout from 'shared/components/layout';
 import s from './admin.css';
 
-class Admin extends React.Component {
-  static propTypes = {
+export default compose(
+  withStyles(s),
+  setDisplayName(__filename),
+  setPropTypes({
     title: PropTypes.string.isRequired,
-  };
-
-  render() {
-    return (
-      <div className={s.root}>
-        <div className={s.container}>
-          <h1>{this.props.title}</h1>
-          <p>...</p>
-        </div>
+  }),
+)(({ title }) => (
+  <Layout>
+    <div className={s.root}>
+      <div className={s.container}>
+        <h1>{title}</h1>
+        <p>...</p>
       </div>
-    );
-  }
-}
-
-export default withStyles(s)(Admin);
+    </div>
+  </Layout>
+));
