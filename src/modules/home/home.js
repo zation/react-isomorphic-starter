@@ -1,4 +1,5 @@
 import React from 'react';
+import Layout from 'shared/components/layout';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { map } from 'lodash/fp';
 import { compose, setDisplayName } from 'recompose';
@@ -13,19 +14,21 @@ export default compose(
     articles: getEntityArray('article')(state),
   })),
 )(({ articles }) => (
-  <div className={s.root}>
-    <div className={s.container}>
-      <h1>React.js News</h1>
-      {map(item => (
-        <article key={item.link} className={s.newsItem}>
-          <h1 className={s.newsTitle}><a href={item.link}>{item.title}</a></h1>
-          <div
-            className={s.newsDesc}
-            // eslint-disable-next-line react/no-danger
-            dangerouslySetInnerHTML={{ __html: item.content }}
-          />
-        </article>
-      ), articles)}
+  <Layout>
+    <div className={s.root}>
+      <div className={s.container}>
+        <h1>React.js News</h1>
+        {map(item => (
+          <article key={item.link} className={s.newsItem}>
+            <h1 className={s.newsTitle}><a href={item.link}>{item.title}</a></h1>
+            <div
+              className={s.newsDesc}
+              // eslint-disable-next-line react/no-danger
+              dangerouslySetInnerHTML={{ __html: item.content }}
+            />
+          </article>
+        ), articles)}
+      </div>
     </div>
-  </div>
+  </Layout>
 ));
