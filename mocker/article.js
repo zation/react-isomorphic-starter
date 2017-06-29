@@ -12,7 +12,7 @@ const getArticle = values => ({
 export const news = map(getArticle)(range(1, 40));
 
 export default (router) => {
-  router.get('/article', (request, response) => {
+  router.get('/article/all', (request, response) => {
     response.status(200).send(news);
   });
 };

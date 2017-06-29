@@ -3,7 +3,9 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 
-import createNews from './article';
+import createArticleRouter from './article';
+import createAuthRouter from './auth';
+import createUserRouter from './user';
 
 const app = express();
 app.use(morgan('dev'));
@@ -17,7 +19,9 @@ app.use((req, res, next) => {
 });
 
 const router = new Router();
-createNews(router);
+createArticleRouter(router);
+createAuthRouter(router);
+createUserRouter(router);
 
 app.use(router);
 

@@ -26,7 +26,7 @@ const context = {
       forEach(f => f())(removeCss);
     };
   },
-  store: createStore({ initialState, apiBaseUrl }),
+  store: createStore({ initialState, apiBaseUrl, history }),
   storeSubscription: null,
 };
 
