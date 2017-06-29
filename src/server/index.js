@@ -38,6 +38,7 @@ if (__DEV__) {
 
 //
 // Register server-side rendering middleware
+// NOTE: HRM will crash if move this to a separate file
 // -----------------------------------------------------------------------------
 app.get('*', async (req, res, next) => {
   try {
@@ -67,7 +68,7 @@ app.get('*', async (req, res, next) => {
       return;
     }
 
-    // NOTICE: keep this before css
+    // NOTE: keep this before css
     const content = ReactDOM.renderToString(<App context={context}>{route.component}</App>);
 
     const html = ReactDOM.renderToStaticMarkup(
