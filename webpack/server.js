@@ -93,7 +93,7 @@ export default {
     global: false,
     process: false,
     Buffer: false,
-    __filename: false,
+    __filename: true,
     __dirname: false,
   },
 

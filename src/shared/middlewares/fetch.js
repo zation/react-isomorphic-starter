@@ -1,6 +1,7 @@
-import { prop } from 'lodash/fp';
+import { prop, omit } from 'lodash/fp';
 
 import fetch from 'isomorphic-fetch';
+import { start, fail } from '../entities/redux-actions';
 import getEntity from '../entities/get-entity';
 import { throwServerError } from '../entities/actions/server-error';
 
@@ -26,12 +27,14 @@ const handleSuccess = (dispatch, action) => response =>
   deserialize(response)
     .then(data => dispatch({ ...action, payload: data }));
 
-const handleFailed = (dispatch, { meta }) => (response) => {
+const handleFailed = (dispatch, action) => (response) => {
   if (response instanceof Error) {
     throw response;
   }
   return deserialize(response)
     .then((data) => {
+      const { meta, type } = action;
+      dispatch({ ...action, type: fail(type), payload: data });
       dispatch(throwServerError({
         errors: data,
       }, {
@@ -45,11 +48,12 @@ const handleFailed = (dispatch, { meta }) => (response) => {
 };
 
 export default ({ apiBaseUrl }) => ({ getState, dispatch }) => next => (action) => {
-  const { payload } = action;
+  const { payload, type } = action;
   if (payload) {
     const { url, isApi, withoutAuth, ...options } = payload;
     if (isApi) {
       const authorization = getEntity('auth.authorization')(getState());
+      dispatch({ ...action, type: start(type), payload: omit('isApi')(payload) });
       return fetch(`${apiBaseUrl}${url}`, {
         ...options,
         headers: {

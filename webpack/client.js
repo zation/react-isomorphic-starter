@@ -126,6 +126,7 @@ export default {
     fs: 'empty',
     net: 'empty',
     tls: 'empty',
+    __filename: true,
   },
 
   bail: !isDev,

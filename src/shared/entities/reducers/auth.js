@@ -1,9 +1,9 @@
-import { handleActions } from '../redux-actions';
+import { handleAPIActions } from '../redux-actions';
 import { READ_MINE } from '../actions/user';
 import { LOGIN } from '../actions/auth';
 
 export default {
-  auth: handleActions({
+  auth: handleAPIActions({
     [LOGIN]: (auth, { payload: { user: { id }, authorization } }) => ({
       isLogin: true,
       authorization,
