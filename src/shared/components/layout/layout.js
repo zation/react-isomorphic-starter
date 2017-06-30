@@ -8,11 +8,11 @@ import Header from './header';
 import Footer from './footer';
 
 export default compose(
+  withStyles(normalizeCss, s),
   setDisplayName(__filename),
   setPropTypes({
     children: PropTypes.node.isRequired,
   }),
-  withStyles(normalizeCss, s),
 )(({ children }) => (
   <div>
     <Header />

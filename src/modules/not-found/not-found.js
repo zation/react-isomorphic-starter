@@ -6,11 +6,11 @@ import { compose, setDisplayName, setPropTypes } from 'recompose';
 import s from './not-found.css';
 
 export default compose(
-  setDisplayName(__filename),
+  withStyles(s),
   setPropTypes({
     title: PropTypes.string.isRequired,
   }),
-  withStyles(s),
+  setDisplayName(__filename),
 )(({ title }) => (
   <Layout>
     <div className={s.root}>

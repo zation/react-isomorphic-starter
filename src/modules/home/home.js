@@ -5,19 +5,17 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { map } from 'lodash/fp';
 import { compose, setDisplayName, setPropTypes } from 'recompose';
 import { connect } from 'react-redux';
-import { getEntityArray } from 'shared/entities/get-entity';
+import selector from './home-selector';
 import s from './home.css';
 
 export default compose(
-  setDisplayName(__filename),
   withStyles(s),
-  connect(state => ({
-    articles: getEntityArray('article')(state),
-  })),
+  connect(selector),
   setPropTypes({
     articles: PropTypes.array.isRequired,
     title: PropTypes.string.isRequired,
   }),
+  setDisplayName(__filename),
 )(({ articles, title }) => (
   <Layout>
     <div className={s.root}>

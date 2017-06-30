@@ -7,10 +7,10 @@ import s from './login.css';
 
 export default compose(
   withStyles(s),
-  setDisplayName(__filename),
   setPropTypes({
     title: PropTypes.string.isRequired,
   }),
+  setDisplayName(__filename),
 )(({ title }) => (
   <Layout>
     <div className={s.root}>

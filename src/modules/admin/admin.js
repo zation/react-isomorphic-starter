@@ -11,13 +11,13 @@ import selector from './admin-selector';
 export default compose(
   withStyles(s),
   connect(selector),
-  setDisplayName(__filename),
   setPropTypes({
     title: PropTypes.string.isRequired,
     currentUser: PropTypes.object.isRequired,
     isUsersFetching: PropTypes.bool.isRequired,
     users: PropTypes.array,
   }),
+  setDisplayName(__filename),
 )(({ title, currentUser, users, isUsersFetching }) => (
   <Layout>
     <div className={s.root}>
