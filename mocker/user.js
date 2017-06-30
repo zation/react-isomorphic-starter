@@ -1,5 +1,6 @@
 import { name, internet, random } from 'faker';
 import { range, map, concat, flow } from 'lodash/fp';
+import delay from 'express-delay';
 
 const getUser = values => ({
   id: random.number(),
@@ -20,7 +21,7 @@ export default (router) => {
     response.status(200).send(currentUser);
   });
 
-  router.get('/user/all', (request, response) => {
+  router.get('/user/all', delay(2000), (request, response) => {
     response.status(200).send(users);
   });
 };

@@ -1,11 +1,17 @@
-import { prop, curry, flow, values } from 'lodash/fp';
+import { prop, curry, flow, values, omit } from 'lodash/fp';
 
-export const getEntityArray = curry(
-  (keyPath, store) => flow(prop(`entities.${keyPath}`), values)(store),
-);
+export const getEntityArray = curry((entityName, store) =>
+  flow(
+    prop(`entities.${entityName}`),
+    omit(['__meta']),
+    values,
+  )(store));
 
-export const getEntityIsFetching = curry(
-  (keyPath, store) => flow(prop(`entities.${keyPath}.__isFetching`), values)(store),
-);
+export const getEntityMeta = curry((entityName, metaName, store) =>
+  prop(`entities.${entityName}.__meta.${metaName}`)(store));
 
-export default curry((keyPath, store) => prop(`entities.${keyPath}`, store));
+export default curry((entityName, store) =>
+  flow(
+    prop(`entities.${entityName}`),
+    result => (prop('__meta')(result) ? omit('__meta')(result) : result),
+  )(store));

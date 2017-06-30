@@ -2642,6 +2642,10 @@ expand-range@^1.8.1:
   dependencies:
     fill-range "^2.1.0"
 
+express-delay@^0.2.0:
+  version "0.2.0"
+  resolved "http://registry.npm.taobao.org/express-delay/download/express-delay-0.2.0.tgz#19ac6dc274447a3d06088f1f1c4bab23ecab3b9e"
+
 express@2.5.x:
   version "2.5.11"
   resolved "http://registry.npm.taobao.org/express/download/express-2.5.11.tgz#4ce8ea1f3635e69e49f0ebb497b6a4b0a51ce6f0"

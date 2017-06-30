@@ -15,9 +15,10 @@ export default compose(
   setPropTypes({
     title: PropTypes.string.isRequired,
     currentUser: PropTypes.object.isRequired,
+    isUsersFetching: PropTypes.bool.isRequired,
     users: PropTypes.array,
   }),
-)(({ title, currentUser, users }) => (
+)(({ title, currentUser, users, isUsersFetching }) => (
   <Layout>
     <div className={s.root}>
       <div className={s.container}>
@@ -27,6 +28,7 @@ export default compose(
           {map(({ id, name }) => (
             <li key={id}>Name: {name}</li>
           ))(users)}
+          {isUsersFetching && <li>Loading...</li>}
         </ul>
       </div>
     </div>

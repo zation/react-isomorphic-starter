@@ -1,10 +1,11 @@
-import { keys, map } from 'lodash/fp';
+import { keys, map, prop, flow, split, flatten } from 'lodash/fp';
 import reduceReducers from 'reduce-reducers';
 import {
   createAction as originalCreateAction,
   handleAction,
   combineActions,
 } from 'redux-actions';
+import { ACTION_TYPE_DELIMITER } from 'redux-actions/lib/combineActions';
 
 const START = 'START';
 const FAIL = 'FAIL';
@@ -19,19 +20,32 @@ export const createAction = (type, payloadCreator, metaCreator) =>
 
 export { handleActions, combineActions } from 'redux-actions';
 
+const updateMeta = meta => state => ({
+  ...state,
+  __meta: {
+    ...prop('__meta')(state),
+    ...meta,
+  },
+});
+
 export const handleAPIActions = (handlers, defaultState) => {
   const actions = keys(handlers);
-  const reducers = map(type => handleAction(type, handlers[type], defaultState))(actions);
+  const reducers = map(action => handleAction(action, handlers[action], defaultState))(actions);
+
+  const splitActions = flow(
+    map(split(ACTION_TYPE_DELIMITER)),
+    flatten,
+  )(actions);
   const reducer = reduceReducers(
     ...reducers,
     handleAction(
-      combineActions(...actions, ...map(fail)(actions)),
-      state => ({ ...state, __isFetching: false }),
+      combineActions(...actions, ...map(fail)(splitActions)),
+      updateMeta({ isFetching: false }),
       defaultState,
     ),
     handleAction(
-      combineActions(...map(start)(actions)),
-      state => ({ ...state, __isFetching: true }),
+      combineActions(...map(start)(splitActions)),
+      updateMeta({ isFetching: true }),
       defaultState,
     ),
   );
