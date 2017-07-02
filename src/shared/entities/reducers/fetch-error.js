@@ -6,7 +6,7 @@ import { THROW_FETCH_ERROR } from '../actions/fetch-error';
 export default {
   fetchError: handleActions({
     [THROW_FETCH_ERROR]: (fetchError, { payload, meta }) => {
-      const errorMessage = prop(payload, 'errors.default');
+      const errorMessage = prop('errors.default', payload);
       if (errorMessage) {
         return { message: errorMessage, ...meta };
       }
