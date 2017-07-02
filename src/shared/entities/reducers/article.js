@@ -1,5 +1,5 @@
 import merge from '../merge';
-import { handleAPIActions } from '../redux-actions';
+import { handleAPIActions } from '../../redux-actions';
 import {
   READ_ALL,
 } from '../actions/article';

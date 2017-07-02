@@ -2,7 +2,7 @@ import { prop } from 'lodash/fp';
 
 import merge from '../merge';
 import { user } from '../schema';
-import { handleAPIActions, combineActions } from '../redux-actions';
+import { handleAPIActions, combineActions } from '../../redux-actions';
 import { LOGIN } from '../actions/auth';
 import {
   READ_MINE,

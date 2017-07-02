@@ -1,12 +1,13 @@
 import { THROW_FETCH_ERROR } from '../entities/actions/fetch-error';
+import { replace } from '../actions/history';
 
-export default ({ history }) => () => next => (action) => {
+export default () => ({ dispatch }) => next => (action) => {
   if (action.type === THROW_FETCH_ERROR) {
     const {
       meta: { status, ignoreAuthRedirection },
     } = action;
     if (status === 401 && !ignoreAuthRedirection) {
-      history.replace('/login');
+      dispatch(replace('/login'));
     }
   }
   return next(action);

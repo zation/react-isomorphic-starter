@@ -2,6 +2,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 
 import fetch from 'shared/middlewares/fetch';
 import handleFetchError from 'shared/middlewares/handle-client-fetch-error';
+import handleHistory from 'shared/middlewares/handle-client-history';
 import reducers from 'shared/reducers';
 
 const { __REDUX_DEVTOOLS_EXTENSION__ } = global;
@@ -9,7 +10,8 @@ const { __REDUX_DEVTOOLS_EXTENSION__ } = global;
 export default ({ initialState, apiBaseUrl, history }) => {
   const middlewares = [
     fetch({ apiBaseUrl }),
-    handleFetchError({ history }),
+    handleFetchError(),
+    handleHistory({ history }),
   ];
 
   if (__DEV__) {

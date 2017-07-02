@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import history from 'client/history';
-import { propEq } from 'lodash/fp';
+import { propEq, omit } from 'lodash/fp';
+import { connect } from 'react-redux';
 import { compose, setDisplayName, setPropTypes, withHandlers } from 'recompose';
+import { push as pushAction } from 'shared/actions/history';
 
 const isLeftClickEvent = propEq('button', 0);
 
@@ -10,6 +11,7 @@ const isModifiedEvent = ({ metaKey, altKey, ctrlKey, shiftKey }) =>
   !!(metaKey || altKey || ctrlKey || shiftKey);
 
 export default compose(
+  connect(null, { push: pushAction }),
   setDisplayName(__filename),
   setPropTypes({
     to: PropTypes.string.isRequired,
@@ -17,7 +19,7 @@ export default compose(
     onClick: PropTypes.func,
   }),
   withHandlers({
-    handleClick: ({ onClick, to }) => (event) => {
+    handleClick: ({ onClick, to, push }) => (event) => {
       if (onClick) {
         onClick(event);
       }
@@ -30,9 +32,9 @@ export default compose(
       }
 
       event.preventDefault();
-      history.push(to);
+      push(to);
     },
   }),
 )(({ to, children, handleClick, ...props }) => (
-  <a href={to} {...props} onClick={handleClick}>{children}</a>
+  <a href={to} {...omit(['push'])(props)} onClick={handleClick}>{children}</a>
 ));

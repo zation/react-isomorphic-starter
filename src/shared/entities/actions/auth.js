@@ -1,4 +1,4 @@
-import { createAction, actionTypeCreator } from '../redux-actions';
+import { createAction, actionTypeCreator } from '../../redux-actions';
 
 import { post } from '../request';
 

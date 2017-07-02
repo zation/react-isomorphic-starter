@@ -1,7 +1,7 @@
 import { prop, omit } from 'lodash/fp';
 
 import fetch from 'isomorphic-fetch';
-import { start, fail } from '../entities/redux-actions';
+import { start, fail } from '../redux-actions';
 import getEntity from '../entities/get-entity';
 import { throwFetchError } from '../entities/actions/fetch-error';
 

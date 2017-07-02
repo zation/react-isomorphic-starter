@@ -1,4 +1,4 @@
-import { handleAPIActions } from '../redux-actions';
+import { handleAPIActions } from '../../redux-actions';
 import { READ_MINE } from '../actions/user';
 import { LOGIN } from '../actions/auth';
 
