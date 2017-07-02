@@ -6,7 +6,7 @@ import queryString from 'query-string';
 import { createPath } from 'history/PathUtils';
 import App from 'shared/app';
 import router from 'shared/router';
-import createStore from 'shared/create-store';
+import createStore from './create-store';
 import history from './history';
 import { updateMeta } from './dom-utils';
 

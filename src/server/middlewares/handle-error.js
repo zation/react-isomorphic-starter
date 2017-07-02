@@ -7,6 +7,9 @@ import Html from '../html';
 // NOTE: express use params number to detect if it's a error handler middleware T_T
 // eslint-disable-next-line no-unused-vars
 export default prettyError => (err, req, res, next) => {
+  if (err.status === 401) {
+    return res.redirect('/login');
+  }
   console.error(prettyError.render(err));
   const html = ReactDOM.renderToStaticMarkup(
     <Html
@@ -17,6 +20,5 @@ export default prettyError => (err, req, res, next) => {
       {ReactDOM.renderToString(<ErrorPageWithoutStyle error={err} />)}
     </Html>,
   );
-  res.status(err.status || 500);
-  res.send(`<!doctype html>${html}`);
+  return res.status(err.status || 500).send(`<!doctype html>${html}`);
 };

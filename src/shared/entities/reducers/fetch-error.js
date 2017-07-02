@@ -1,16 +1,16 @@
 import { prop } from 'lodash/fp';
 
 import { handleActions } from '../redux-actions';
-import { THROW_SERVER_ERROR } from '../actions/server-error';
+import { THROW_FETCH_ERROR } from '../actions/fetch-error';
 
 export default {
-  serverError: handleActions({
-    [THROW_SERVER_ERROR]: (serverError, { payload, meta }) => {
+  fetchError: handleActions({
+    [THROW_FETCH_ERROR]: (fetchError, { payload, meta }) => {
       const errorMessage = prop(payload, 'errors.default');
       if (errorMessage) {
         return { message: errorMessage, ...meta };
       }
-      return serverError;
+      return fetchError;
     },
 
   }, {}),

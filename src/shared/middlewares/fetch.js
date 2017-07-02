@@ -3,7 +3,14 @@ import { prop, omit } from 'lodash/fp';
 import fetch from 'isomorphic-fetch';
 import { start, fail } from '../entities/redux-actions';
 import getEntity from '../entities/get-entity';
-import { throwServerError } from '../entities/actions/server-error';
+import { throwFetchError } from '../entities/actions/fetch-error';
+
+class FetchException {
+  constructor({ errors, status }) {
+    this.errors = errors;
+    this.status = status;
+  }
+}
 
 const checkStatus = (response) => {
   if (response.status >= 200 && response.status < 300) {
@@ -35,15 +42,18 @@ const handleFailed = (dispatch, action) => (response) => {
     .then((data) => {
       const { meta, type } = action;
       dispatch({ ...action, type: fail(type), payload: data });
-      dispatch(throwServerError({
+      dispatch(throwFetchError({
         errors: data,
       }, {
         status: response.status,
         statusText: response.statusText,
-        ignoreGlobalWarning: prop('ignoreGlobalWarning')(meta),
-        ignoreAuthRedirection: prop('ignoreAuthRedirection')(meta),
+        ignoreGlobalWarning: prop('ignoreGlobalWarning', meta),
+        ignoreAuthRedirection: prop('ignoreAuthRedirection', meta),
       }));
-      throw data;
+      throw new FetchException({
+        errors: data,
+        status: response.status,
+      });
     });
 };
 

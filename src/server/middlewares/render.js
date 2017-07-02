@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import { map, forEach } from 'lodash/fp';
-import createStore from 'shared/create-store';
 import App from 'shared/app';
+import createStore from '../create-store';
 import Html from '../html';
 import config from '../config';
 import assets from './assets.json'; // eslint-disable-line import/no-unresolved
