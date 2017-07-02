@@ -120,7 +120,12 @@ async function onLocationChange(location, action) {
     appInstance = ReactDOM.render(
       <App context={context}>{route.component}</App>,
       container,
-      () => onRenderComplete(route, location),
+      () => {
+        onRenderComplete(route, location);
+        if (route.clientLoad) {
+          route.clientLoad();
+        }
+      },
     );
   } catch (error) {
     if (__DEV__) {

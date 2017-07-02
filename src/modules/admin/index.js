@@ -7,7 +7,6 @@ const title = 'Admin Page';
 
 export default async ({ store: { dispatch, getState } }) => {
   await dispatch(readMineUser());
-  dispatch(readAllUsers());
 
   const currentUser = getCurrentUser(getState());
 
@@ -16,6 +15,7 @@ export default async ({ store: { dispatch, getState } }) => {
       chunks: ['admin'],
       title: `${title} - ${currentUser.name}`,
       component: <Admin title={title} />,
+      clientLoad: () => dispatch(readAllUsers()),
     };
   }
 
