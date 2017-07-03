@@ -1,22 +1,22 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 
-import fetch from 'shared/middlewares/fetch';
-import handleAPIError from 'shared/middlewares/handle-client-api-error';
-import handleHistory from 'shared/middlewares/handle-client-history';
+import handleAPI from 'shared/redux/middlewares/handle-api';
+import handleAPIError from 'shared/redux/middlewares/handle-client-api-error';
+import handleHistory from 'shared/redux/middlewares/handle-client-history';
 import reducers from 'shared/reducers';
 
 const { __REDUX_DEVTOOLS_EXTENSION__ } = global;
 
 export default ({ initialState, apiBaseUrl, history }) => {
   const middlewares = [
-    fetch({ apiBaseUrl }),
+    handleAPI({ apiBaseUrl }),
     handleAPIError(),
     handleHistory({ history }),
   ];
 
   if (__DEV__) {
     // eslint-disable-next-line global-require
-    middlewares.push(require('shared/middlewares/log-client').default);
+    middlewares.push(require('shared/redux/middlewares/log-client').default);
   }
 
   return compose(

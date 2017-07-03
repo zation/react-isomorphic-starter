@@ -1,5 +1,5 @@
-import { THROW_API_ERROR } from '../redux/api-error/actions';
-import { replace } from '../actions/history';
+import { THROW_API_ERROR } from '../api-error/actions';
+import { replace } from '../../actions/history';
 
 export default () => ({ dispatch }) => next => (action) => {
   if (action.type === THROW_API_ERROR) {
