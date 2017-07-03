@@ -1,6 +1,6 @@
-import { handleAPIActions } from '../../redux-actions';
-import { READ_MINE } from '../actions/user';
-import { LOGIN } from '../actions/auth';
+import { handleAPIActions } from '../utils/redux-actions';
+import { READ_MINE } from '../user/actions';
+import { LOGIN } from './actions';
 
 export default {
   auth: handleAPIActions({

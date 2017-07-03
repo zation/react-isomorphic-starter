@@ -1,8 +1,8 @@
-import { THROW_FETCH_ERROR } from '../entities/actions/fetch-error';
+import { THROW_API_ERROR } from '../redux/api-error/actions';
 import { replace } from '../actions/history';
 
 export default () => ({ dispatch }) => next => (action) => {
-  if (action.type === THROW_FETCH_ERROR) {
+  if (action.type === THROW_API_ERROR) {
     const {
       meta: { status, ignoreAuthRedirection },
     } = action;

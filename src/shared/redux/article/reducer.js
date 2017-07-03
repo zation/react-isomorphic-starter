@@ -1,8 +1,8 @@
-import merge from '../merge';
-import { handleAPIActions } from '../../redux-actions';
+import merge from '../utils/merge';
+import { handleAPIActions } from '../utils/redux-actions';
 import {
   READ_ALL,
-} from '../actions/article';
+} from './actions';
 import { article } from '../schema';
 
 export default {

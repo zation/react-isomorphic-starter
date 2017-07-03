@@ -1,6 +1,6 @@
-import { createAction, actionTypeCreator } from '../../redux-actions';
+import { createAction, actionTypeCreator } from '../utils/redux-actions';
 
-import { read } from '../request';
+import { read } from '../utils/request';
 
 const actionType = actionTypeCreator(__filename);
 export const READ_ALL = actionType('READ_ALL');

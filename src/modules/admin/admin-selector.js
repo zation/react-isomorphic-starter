@@ -1,4 +1,4 @@
-import { getEntityArray, getEntityMeta } from 'shared/entities/get-entity';
+import { getEntityArray, getEntityMeta } from 'shared/redux/get-entity';
 import getCurrentUser from 'shared/selectors/current-user';
 
 export default state => ({

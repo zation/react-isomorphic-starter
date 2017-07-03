@@ -1,6 +1,6 @@
-import { createAction, actionTypeCreator } from '../../redux-actions';
+import { createAction, actionTypeCreator } from '../utils/redux-actions';
 
-import { post } from '../request';
+import { post } from '../utils/request';
 
 const actionType = actionTypeCreator(__filename);
 export const LOGIN = actionType('LOGIN');

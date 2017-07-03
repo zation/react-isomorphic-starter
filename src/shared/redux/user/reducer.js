@@ -1,13 +1,13 @@
 import { prop } from 'lodash/fp';
 
-import merge from '../merge';
+import merge from '../utils/merge';
 import { user } from '../schema';
-import { handleAPIActions, combineActions } from '../../redux-actions';
-import { LOGIN } from '../actions/auth';
+import { handleAPIActions, combineActions } from '../utils/redux-actions';
+import { LOGIN } from '../auth/actions';
 import {
   READ_MINE,
   READ_ALL,
-} from '../actions/user';
+} from './actions';
 
 export default {
   user: handleAPIActions({

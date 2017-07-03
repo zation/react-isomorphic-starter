@@ -1,9 +1,9 @@
 import { prop, omit } from 'lodash/fp';
 
 import fetch from 'isomorphic-fetch';
-import { start, fail } from '../redux-actions';
-import getEntity from '../entities/get-entity';
-import { throwFetchError } from '../entities/actions/fetch-error';
+import { start, fail } from '../redux/utils/redux-actions';
+import getEntity from '../redux/get-entity';
+import { throwAPIError } from '../redux/api-error/actions';
 
 class FetchException {
   constructor({ errors, status }) {
@@ -42,7 +42,7 @@ const handleFailed = (dispatch, action) => (response) => {
     .then((data) => {
       const { meta, type } = action;
       dispatch({ ...action, type: fail(type), payload: data });
-      dispatch(throwFetchError({
+      dispatch(throwAPIError({
         errors: data,
       }, {
         status: response.status,

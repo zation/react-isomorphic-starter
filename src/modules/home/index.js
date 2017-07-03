@@ -1,5 +1,5 @@
 import React from 'react';
-import { readAllArticles } from 'shared/entities/actions/article';
+import { readAllArticles } from 'shared/redux/article/actions';
 import Home from './home';
 
 const title = 'React Starter Kit';

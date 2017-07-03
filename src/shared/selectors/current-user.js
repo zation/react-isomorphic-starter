@@ -1,6 +1,6 @@
 import { flow, prop } from 'lodash/fp';
 
-import getEntity from 'shared/entities/get-entity';
+import getEntity from 'shared/redux/get-entity';
 
 export default state => flow(
   getEntity('user'),
