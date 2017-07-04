@@ -6,12 +6,11 @@ const inspectObject = object =>
   });
 
 // Server side redux action logger
-export default () => next => (action) => {
+export default ({ logger }) => () => next => (action) => {
   if (action.error) {
-    console.error(` * ${action.type}: ${inspectObject(action.payload)}, ${inspectObject(action.meta)}`);
+    logger.error(` * ${action.type}: ${inspectObject(action.payload)}, ${inspectObject(action.meta)}`);
   } else {
-    // eslint-disable-next-line no-console
-    console.log(` * ${action.type}`);
+    logger.info(` * ${action.type}`);
   }
 
   return next(action);

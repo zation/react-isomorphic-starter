@@ -6,7 +6,10 @@ import PrettyError from 'pretty-error';
 import router from 'shared/router';
 import handleError from './middlewares/handle-error';
 import render from './middlewares/render';
+import healthCheck from './middlewares/health-check';
+import logger from './logger';
 import config from './config';
+import enableGracefulShutdown from './enable-graceful-shutdown';
 
 const app = express();
 
@@ -29,6 +32,8 @@ if (__DEV__) {
   app.enable('trust proxy');
 }
 
+app.route('/healthCheck').get(healthCheck);
+
 //
 // Register server-side rendering middleware
 // NOTE: resolve should happen in entry file, otherwise HMR will crash
@@ -47,8 +52,9 @@ app.use(handleError(prettyError));
 // Launch the server
 // -----------------------------------------------------------------------------
 if (!module.hot) {
-  app.listen(config.port, () => {
-    console.info(`The server is running at http://localhost:${config.port}/`);
+  const server = enableGracefulShutdown(app);
+  server.listen(config.port, () => {
+    logger.info(`The server is running at http://localhost:${config.port}/`);
   });
 }
 

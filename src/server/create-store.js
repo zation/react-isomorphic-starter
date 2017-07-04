@@ -2,6 +2,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 
 import handleAPI from 'shared/redux/middlewares/handle-api';
 import reducers from 'shared/reducers';
+import logger from './logger';
 
 const { __REDUX_DEVTOOLS_EXTENSION__ } = global;
 
@@ -12,7 +13,7 @@ export default ({ initialState, apiBaseUrl }) => {
 
   if (__DEV__) {
     // eslint-disable-next-line global-require
-    middlewares.push(require('shared/redux/middlewares/log-server').default);
+    middlewares.push(require('shared/redux/middlewares/log-server').default({ logger }));
   }
 
   return compose(
