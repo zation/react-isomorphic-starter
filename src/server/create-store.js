@@ -4,8 +4,6 @@ import handleAPI from 'shared/redux/middlewares/handle-api';
 import reducers from 'shared/reducers';
 import logger from './logger';
 
-const { __REDUX_DEVTOOLS_EXTENSION__ } = global;
-
 export default ({ initialState, apiBaseUrl }) => {
   const middlewares = [
     handleAPI({ apiBaseUrl }),
@@ -21,6 +19,5 @@ export default ({ initialState, apiBaseUrl }) => {
   )(createStore)(
     reducers,
     initialState,
-    __REDUX_DEVTOOLS_EXTENSION__ && __REDUX_DEVTOOLS_EXTENSION__(),
   );
 };
