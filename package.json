@@ -124,6 +124,7 @@
     "lint:css": "stylelint \"src/**/*.{css,less,scss,sss}\"",
     "lint:staged": "lint-staged",
     "lint": "yarn run lint:js && yarn run lint:css",
+    "test": "yarn run lint",
     "clean": "babel-node tools/run clean",
     "copy": "babel-node tools/run copy",
     "bundle": "babel-node tools/run bundle",
@@ -132,7 +133,7 @@
     "render": "babel-node tools/run render",
     "serve": "babel-node tools/run run-server",
     "start": "babel-node tools/run dev-server",
-    "mocker": "nodemon --watch ./mocker ./mocker/index.js --exec babel-node"
-  },
-  "pre-commit": []
+    "mocker": "nodemon --watch ./mocker ./mocker/index.js --exec babel-node",
+    "precommit": "npm test"
+  }
 }

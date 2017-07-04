@@ -1,4 +1,4 @@
-import { createAction, actionTypeCreator } from '../redux/utils/redux-actions';
+import { createAction, actionTypeCreator } from '../utils/redux-actions';
 
 const actionType = actionTypeCreator(__filename);
 export const PUSH = actionType('PUSH');

@@ -1,5 +1,5 @@
 import { THROW_API_ERROR } from '../api-error/actions';
-import { replace } from '../../actions/history';
+import { replace } from '../history/actions';
 
 export default () => ({ dispatch }) => next => (action) => {
   if (action.type === THROW_API_ERROR) {

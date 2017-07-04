@@ -1,6 +1,6 @@
 import React from 'react';
 import { readMineUser, readAllUsers } from 'shared/redux/user/actions';
-import getCurrentUser from 'shared/selectors/current-user';
+import getCurrentUser from 'shared/redux/user/current-user';
 import Admin from './admin';
 
 const title = 'Admin Page';
