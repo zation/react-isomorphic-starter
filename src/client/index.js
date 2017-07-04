@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { map, forEach } from 'lodash/fp';
 import deepForceUpdate from 'react-deep-force-update';
-import queryString from 'query-string';
+import qs from 'qs';
 import { createPath } from 'history/PathUtils';
 import App from 'shared/app';
 import router from 'shared/router';
@@ -104,7 +104,7 @@ async function onLocationChange(location, action) {
     const route = await router.resolve({
       ...context,
       path: location.pathname,
-      query: queryString.parse(location.search),
+      query: qs.parse(location.search),
     });
 
     // Prevent multiple page renders during the routing process
